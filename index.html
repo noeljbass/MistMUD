@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#131817">
+  <title>The Skaa’s Secret</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./src/browser.js"></script>
+</head>
+<body>
+  <main class="game">
+    <header class="masthead">
+      <p class="eyebrow"><span aria-hidden="true">✦</span> A Luthadel adventure</p>
+      <h1>The Skaa’s Secret</h1>
+    </header>
+    <section class="terminal" aria-label="Game terminal">
+      <header class="dashboard">
+        <div><span class="eyebrow">Current location</span><h2 id="room">Luthadel</h2></div>
+        <dl class="meters">
+          <div><dt>Health</dt><dd id="health">—</dd></div>
+          <div><dt>Steel</dt><dd id="steel">—</dd></div>
+          <div><dt>Iron</dt><dd id="iron">—</dd></div>
+        </dl>
+      </header>
+      <div id="log" class="log" role="log" aria-label="Adventure transcript" tabindex="0"></div>
+      <form id="command-form" class="command">
+        <label for="command">Command</label>
+        <div class="prompt">
+          <span aria-hidden="true">›</span>
+          <input id="command" type="text" placeholder="Try look or help…" maxlength="120"
+            autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="send" disabled>
+          <button id="submit" disabled>Enter</button>
+        </div>
+      </form>
+      <footer class="toolbar">
+        <div id="directions" class="controls" role="group" aria-label="Directions">
+          <button data-command="north" aria-label="Go north" disabled>↑ N</button>
+          <button data-command="south" aria-label="Go south" disabled>↓ S</button>
+          <button data-command="east" aria-label="Go east" disabled>→ E</button>
+          <button data-command="west" aria-label="Go west" disabled>← W</button>
+        </div>
+        <div id="actions" class="controls" role="group" aria-label="Game actions">
+          <button data-command="help" disabled>Help</button>
+          <button data-command="save" disabled>Save</button>
+          <button data-command="load" disabled>Load</button>
+          <button data-command="restart" disabled>Restart</button>
+        </div>
+      </footer>
+    </section>
+    <p class="caption">Ash falls. The mists wait.</p>
+  </main>
+</body>
+</html>

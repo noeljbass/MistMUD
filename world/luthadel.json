@@ -1,0 +1,217 @@
+{
+  "start": "courtyard",
+  "intro": "Ash falls softly on Luthadel. Last night Tavin, the resistance courier who taught you to read, missed his lantern signal. This morning you swallowed the metal flakes he left in an emergency vial. Now two little sparks of warmth wait inside you. Mara, your neighbor, is watching the laundry door.",
+  "rooms": {
+    "courtyard": {
+      "name": "Ashfall Courtyard",
+      "description": "You tuck your scarf under your chin as ash settles over the paving stones. Warm light spills from the laundry to the east. A narrow alley leads north.",
+      "exits": { "east": "laundry", "north": "alley" }
+    },
+    "laundry": {
+      "name": "Skaa Laundry",
+      "description": "Steaming linens hang like clouds. Mara folds the same towel twice, her eyes on a slate beside the washing tubs. The hem of a folded apron bulges.",
+      "exits": { "west": "courtyard" }
+    },
+    "alley": {
+      "name": "Brickmakers’ Alley",
+      "description": "A chalk moth marks the loft door to the west. A rusted drain grate catches the ash beneath your feet.",
+      "exits": {
+        "south": "courtyard",
+        "west": { "to": "loft", "requires": "trusted", "blocked": "Mara has the key to the loft. Talk to her in the laundry." }
+      }
+    },
+    "loft": {
+      "name": "Lamplighters’ Loft",
+      "description": "A lamplighter’s bench stands before a shuttered passage north. The shutter’s release is behind a safety cage, just beyond your fingertips.",
+      "exits": {
+        "east": "alley",
+        "north": { "to": "towpath", "requires": "shutterOpen", "blocked": "The shutter bars the passage. Examine its iron pin and steel lever." }
+      }
+    },
+    "towpath": {
+      "name": "Mist Canal Towpath",
+      "description": "A maintenance punt noses against the bank. Across the canal, a mooring ring is bolted to the landing. The narrow footbridge has folded back against the far bank.",
+      "descriptionAfter": { "flag": "bridgeDown", "text": "The mist parts around the lowered footbridge. The landing lies across the canal to the east." },
+      "exits": { "south": "loft", "east": { "to": "landing", "revealedBy": "bridgeDown" } }
+    },
+    "landing": {
+      "name": "Canal Landing",
+      "description": "The punt bumps the stone beside the lowered footbridge. A signal bell hangs by a closed gate to the north. A cushion on the bench looks unusually lumpy.",
+      "signal": {
+        "pattern": "short long short", "flag": "gateOpen",
+        "success": "The bell echoes across the canal. Someone on the other side slides the gate open.",
+        "hint": "The gate stays shut. Examine the signal bell for the rhythm."
+      },
+      "rest": true,
+      "exits": { "west": "towpath", "north": { "to": "checkpoint", "requires": "gateOpen", "blocked": "The gate is closed. Examine the signal bell beside it." } }
+    },
+    "checkpoint": {
+      "name": "Lamplighters’ Checkpoint",
+      "description": "Nera guards the archive in a quilted coat and a practice shield. A steel puck sits on a rail behind your heels. An iron weight hangs on another rail behind Nera. A locker stands beside the archive door to the east.",
+      "descriptionAfter": { "flag": "sparWon", "text": "Nera leans against the wall, grinning. The practice rails are quiet. A locker stands beside the archive door to the east." },
+      "encounter": { "opponent": "nera", "health": 6, "counter": 2, "flag": "sparWon", "retreat": "landing" },
+      "exits": { "south": "landing", "east": { "to": "archive", "requires": "archiveOpen", "blocked": "The archive door is locked. Examine the lock." } }
+    },
+    "archive": {
+      "name": "Canal Archive",
+      "description": "A swiveling mirror catches the light of a lamp. A painted mural hangs above three lanterns, and a seam in the eastern wall outlines a hidden door.",
+      "exits": { "west": "checkpoint", "east": { "to": "refuge", "requires": "mirrorAligned", "blocked": "The hidden door won’t budge. Examine the mural and mirror." } }
+    },
+    "refuge": {
+      "name": "Hidden Lantern Refuge",
+      "description": "A lantern warms a little room lined with books. A familiar figure looks up from a kettle, his sleeves powdered with ash.",
+      "exits": { "west": "archive" }
+    }
+  },
+  "objects": {
+    "apron": {
+      "name": "folded apron", "aliases": ["apron"], "room": "laundry",
+      "description": "A stitch in the shape of a moth marks the bulging pocket. Try searching the apron.",
+      "search": { "flag": "apronSearched", "message": "You turn out the pocket and find a steel vial." }
+    },
+    "steelVial": {
+      "name": "steel vial", "room": "laundry", "hiddenBy": "apronSearched", "portable": true,
+      "description": "This vial holds four measures of steel. Take it and use it when your reserves run low.",
+      "supply": { "steel": 4 }
+    },
+    "bench": {
+      "name": "canal bench", "aliases": ["bench", "cushion"], "room": "landing",
+      "description": "Someone stitched a moth into the cushion. You can search it or rest here to recover health.",
+      "search": { "flag": "benchSearched", "message": "You lift the cushion and discover a mixed vial." }
+    },
+    "mixedVial": {
+      "name": "mixed vial", "room": "landing", "hiddenBy": "benchSearched", "portable": true,
+      "description": "This vial holds four measures each of iron and steel. Take it and use it when you need a top-up.",
+      "supply": { "iron": 4, "steel": 4 }
+    },
+    "bell": {
+      "name": "signal bell", "aliases": ["bell"], "room": "landing",
+      "description": "Someone scratched three marks into the bell: a dot, a dash, and a dot. Below them it reads: ‘A dot is a short ring. A dash is a long ring. Type SIGNAL followed by the rhythm.’"
+    },
+    "puck": {
+      "name": "steel puck", "aliases": ["puck"], "room": "checkpoint",
+      "description": "The rail curves from behind your heels toward Nera’s padded shield. A Steelpush will send the puck rolling away from you and into her shield. A return slope rolls it back.",
+      "metal": { "mass": 1, "material": "steel", "anchored": false, "manipulable": true },
+      "allomancy": {
+        "push": { "attack": true, "message": "You Steelpush the puck from behind your heels. It rolls up the rail and thumps Nera’s shield." },
+        "pull": { "blocked": "The puck is behind you. Pulling it would stop it at your feet. Try pushing it along the rail." }
+      }
+    },
+    "weight": {
+      "name": "iron weight", "aliases": ["weight"], "room": "checkpoint",
+      "description": "The weight hangs behind Nera. An Ironpull will swing it toward you and into the padded back of her coat. The rope swings it back into place afterward.",
+      "metal": { "mass": 2, "material": "iron", "anchored": false, "manipulable": true },
+      "allomancy": {
+        "pull": { "attack": true, "message": "You Ironpull the weight from behind Nera. It swings toward you and bumps the padding on her back." },
+        "push": { "blocked": "The weight is behind Nera. Pushing it would send it away from both of you. Try pulling it." }
+      }
+    },
+    "locker": {
+      "name": "practice locker", "aliases": ["locker"], "room": "checkpoint",
+      "description": "A fresh scratch on the bottom shelf marks a shallow false floor. Try searching the locker.",
+      "search": {
+        "requires": "sparWon", "blocked": "Nera asks you to finish the practice bout before going through the locker.",
+        "flag": "lockerSearched", "message": "You lift the false floor and find an archive key."
+      }
+    },
+    "archiveKey": {
+      "name": "archive key", "aliases": ["key"], "room": "checkpoint", "hiddenBy": "lockerSearched", "portable": true,
+      "description": "A small key stamped with a lantern. It fits the archive lock.",
+      "unlock": { "target": "archiveLock", "flag": "archiveOpen", "message": "The key turns. The archive door opens to the east." },
+      "metal": { "mass": 0.04, "material": "brass", "anchored": false, "manipulable": false }
+    },
+    "archiveLock": {
+      "name": "archive lock", "aliases": ["lock", "door"], "room": "checkpoint",
+      "description": "A tiny lantern is stamped next to the keyhole. The practice locker may hold a key. Try USE KEY ON LOCK once you have it.",
+      "metal": { "mass": 1, "material": "iron", "anchored": true, "manipulable": false }
+    },
+    "mural": {
+      "name": "painted mural", "aliases": ["mural"], "room": "archive",
+      "description": "A brass moth flies past a green field and a red sunset, then lands beneath a blue moon. An inscription reads: ‘Light the lantern the moth chose to rest beneath.’"
+    },
+    "mirror": {
+      "name": "swiveling mirror", "aliases": ["mirror"], "room": "archive",
+      "description": "The mirror can shine onto the green, red, or blue lantern. Try AIM MIRROR AT followed by a lantern’s color.",
+      "aim": {
+        "target": "blue", "flag": "mirrorAligned",
+        "message": "Blue glass lights up. A catch clicks, and the hidden door swings open to the east.",
+        "hint": "The light glows, but the door stays closed. The mural may show which lantern to light."
+      }
+    },
+    "slate": {
+      "name": "laundry slate", "aliases": ["slate"], "room": "laundry",
+      "description": "In Tavin’s neat handwriting: ‘If I miss the light, find my brass moth under the alley grate. Show Mara. She knows the way.’"
+    },
+    "grate": {
+      "name": "drain grate", "aliases": ["grate", "drain"], "room": "alley",
+      "description": "A brass moth glints just beneath the grate. The bars are too close for your fingers. If you burn iron, you might pull the moth through.",
+      "metal": { "mass": 18, "material": "iron", "anchored": true, "manipulable": false }
+    },
+    "moth": {
+      "name": "brass moth", "aliases": ["moth", "token"], "room": "alley",
+      "description": "A thumb-sized brass moth with Tavin’s initials scratched into one wing.",
+      "portable": true,
+      "metal": { "mass": 0.03, "material": "brass", "anchored": false, "manipulable": true },
+      "allomancy": {
+        "pull": { "flag": "mothFree", "collect": true, "message": "The brass moth slips through the grate and lands in your palm." },
+        "push": { "blocked": "A push would wedge the moth deeper. Try pulling it toward you." }
+      },
+      "takeRequires": "mothFree",
+      "takeBlocked": "Your fingers won’t fit through the grate. Try pulling the moth with iron."
+    },
+    "pin": {
+      "name": "iron pin", "aliases": ["pin"], "room": "loft",
+      "description": "The pin keeps the shutter lever locked. There is an opening in the cage just big enough to pull the pin straight out.",
+      "portable": true,
+      "metal": { "mass": 0.2, "material": "iron", "anchored": false, "manipulable": true },
+      "allomancy": {
+        "pull": { "flag": "pinFree", "collect": true, "message": "The pin shoots out of the cage and you catch it in your scarf. The lever is free to slide." },
+        "push": { "blocked": "The pin has to come out toward you. Try pulling it." }
+      },
+      "takeRequires": "pinFree",
+      "takeBlocked": "The safety cage keeps the pin out of reach. You can pull it through the opening with iron."
+    },
+    "lever": {
+      "name": "steel lever", "aliases": ["lever", "release"], "room": "loft",
+      "description": "The lever slides away from the cage opening to release the shutter. The iron pin must be removed first.",
+      "metal": { "mass": 2, "material": "steel", "anchored": false, "manipulable": true },
+      "allomancy": {
+        "push": { "requires": "pinFree", "blocked": "The iron pin holds the lever in place. Pull the pin first.", "flag": "shutterOpen", "message": "The lever slides away from you with a click. The shutter rolls up, opening the north passage." },
+        "pull": { "blocked": "The lever needs to slide away from you. Try pushing it." }
+      }
+    },
+    "ring": {
+      "name": "mooring ring", "aliases": ["ring", "anchor"], "room": "towpath",
+      "description": "The iron ring is bolted to the far bank. You can stand in the punt and pull against the ring to carry yourself across.",
+      "metal": { "mass": 12, "material": "iron", "anchored": true, "manipulable": true },
+      "allomancy": {
+        "pull": { "flag": "bridgeDown", "moveTo": "landing", "message": "You step into the punt and pull. The ring holds firm, drawing you and the punt through the mist to the far bank." },
+        "push": { "blocked": "Pushing against the ring would send the punt away from the landing. Try pulling it." }
+      }
+    }
+  },
+  "characters": {
+    "nera": {
+      "name": "Nera", "aliases": ["lookout", "guard"], "room": "checkpoint",
+      "description": "Nera is a resistance lookout wearing a quilted practice coat. Her padded baton is for sparring.",
+      "flag": "sparWon",
+      "waiting": "“Tavin’s safe. First show me how you’d get past a shield. Push the puck from behind you or pull the weight from behind me. I’ll guard against your last trick, so switch it up. You can step south for a breather.”",
+      "repeat": "“Nicely done. Search the locker for the archive key. Tavin left a clue in the archive mural.”"
+    },
+    "mara": {
+      "name": "Mara", "room": "laundry",
+      "description": "Mara keeps the laundry running and knows every family on the block.",
+      "requiresItem": "moth", "flag": "trusted",
+      "waiting": "“Tavin left word on the laundry slate. Bring me his moth and I’ll know he meant for you to follow.”",
+      "success": "Mara turns the moth over and smiles. “That’s his mark. I’ll unlock the loft door in the alley. He uses the old canal passage. Remember, iron pulls metal toward you and steel pushes it away.”",
+      "repeat": "“The loft is west of Brickmakers’ Alley. If the passage gives you trouble, examine what’s holding it shut.”"
+    },
+    "tavin": {
+      "name": "Tavin", "aliases": ["courier", "contact"], "room": "refuge",
+      "description": "Tavin looks tired and very glad to see you. An open book lies beside his tea.",
+      "flag": "victory",
+      "success": "“You found my trail!” Tavin pours you a cup of tea. “The bridge jammed while I was bringing books here. Now that you’ve lowered it, we can light the signal together.” You carry the lantern to the window. Across the canal, Mara’s light blinks back. Tomorrow the children will have stories to read, and tonight you have one of your own.",
+      "repeat": "Tavin makes room at the table. “Pick a book. We have time before the kettle boils again.”"
+    }
+  }
+}
